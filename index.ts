@@ -26,7 +26,13 @@ function download(filename: string, text: string, meta: BlobPropertyBag = { type
 }
 
 try {
-  assert(false, 'This bookmarklet does not do anything yet.')
+  const { hostname, href } = location
+  assert(hostname.endsWith('reddit.com'), 'This bookmarklet only works on reddit')
+
+  const redirect = new URL(href)
+  redirect.hostname = 'redditdl.com'
+
+  location.href = redirect.toString()
 } catch (err) {
   assert(err instanceof Error)
   alert(err.message)
