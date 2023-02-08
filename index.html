@@ -51,7 +51,7 @@
     switch (true) {
       case diff < minute:
         const seconds = Math.round(diff / 1000)
-        return `${seconds} ${seconds > 1 ? 'seconds' : 'second'} ago`
+        return `${seconds} second${seconds > 1 ? 's' : ''} ago`
       case diff < hour:
         return Math.round(diff / minute) + ' minutes ago'
       case diff < day:

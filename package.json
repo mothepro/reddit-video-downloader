@@ -1,16 +1,16 @@
 {
-  "name": "linkedin-exporter",
-  "description": "Download Linkedin Sales lists",
+  "name": "reddit-video-downloader",
+  "description": "Download Reddit videos faster",
   "author": "Maurice Prosper",
   "version": "0.0.0",
-  "license": "GNU General Public License v3.0",
+  "license": "GPL-3.0",
   "main": "dist/index.js",
   "sideEffects": false,
   "type": "module",
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/mothepro/bookmarklet",
+  "repository": "https://github.com/mothepro/reddit-video-downloader",
   "scripts": {
     "prerelease": "npm run build",
     "release": "np",
