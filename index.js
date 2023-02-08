@@ -23,8 +23,9 @@ function download(filename, text, meta = { type: 'text/csv' }) {
     // document.body.removeChild(element)
 }
 try {
-    const { hostname, href } = location;
-    assert(hostname.endsWith('reddit.com'), 'This bookmarklet only works on reddit');
+    const { hostname, href, pathname } = location;
+    assert(hostname.endsWith('reddit.com'), `Click again when you're on reddit`);
+    assert(pathname.match(/\/r\/.+\/comments\/.+/), `Click again when you have a reddit post open`);
     const redirect = new URL(href);
     redirect.hostname = 'redditdl.com';
     location.href = redirect.toString();

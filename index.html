@@ -11,7 +11,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
   >
-  <title>Bookmarklet</title>
+  <title>Reddit Video Downloader</title>
   <link 
     rel="stylesheet"
     href="https://unpkg.com/@picocss/pico@latest/css/pico.classless.min.css"
@@ -22,17 +22,14 @@
   <main class="container">
     <h1>Bookmarklet</h1>
     <article>
-      <ol>
-        <li>
-          Drag <a role="button" bookmarklet href="javascript:(function(){%22use%20strict%22;function%20o(o,r=%22Assertion%20Error%22)%7Bif(!o)throw%20new%20Error(r)%7Dtry%7Bconst%7Bhostname:r,href:t%7D=location;o(r.endsWith(%22reddit.com%22),%22This%20bookmarklet%20only%20works%20on%20reddit%22);const%20e=new%20URL(t);e.hostname=%22redditdl.com%22,location.href=e.toString()%7Dcatch(r)%7Bo(r%20instanceof%20Error),alert(r.message)%7D})();">Bookmarklet</a> to your bookmarks
-        </li>
-      </ol>
+      Drag <a role="button" bookmarklet href="javascript:(function(){%22use%20strict%22;function%20t(t,e=%22Assertion%20Error%22)%7Bif(!t)throw%20new%20Error(e)%7Dtry%7Bconst%7Bhostname:e,href:o,pathname:n%7D=location;t(e.endsWith(%22reddit.com%22),%22Click%20again%20when%20you're%20on%20reddit%22),t(n.match(/%5C/r%5C/.+%5C/comments%5C/.+/),%22Click%20again%20when%20you%20have%20a%20reddit%20post%20open%22);const%20r=new%20URL(o);r.hostname=%22redditdl.com%22,location.href=r.toString()%7Dcatch(e)%7Bt(e%20instanceof%20Error),alert(e.message)%7D})();">Reddit Video Downloader</a> to your bookmarks.<br>
+      Then click the bookmark while a reddit video is open.
     </article>
   </main>
   <footer>
-    Made by Mo <span build-time="1675846505275">Wed Feb 08 2023 02:55:05 GMT-0600 (Central Standard Time)</span> with
+    Made by Mo <span build-time="1675848002212">Wed Feb 08 2023 03:20:02 GMT-0600 (Central Standard Time)</span> with
     <a 
-      href="https://github.com/mothepro/bookmarklet"
+      href="https://github.com/mothepro/reddit-video-downloader"
       target="_blank"
       rel="noopener noreferrer"
     >TypeScript</a>.
