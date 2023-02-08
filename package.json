@@ -11,6 +11,7 @@
     "dist"
   ],
   "repository": "https://github.com/mothepro/reddit-video-downloader",
+  "homepage": "https://mothepro.github.io/reddit-video-downloader/",
   "scripts": {
     "prerelease": "npm run build",
     "release": "np",
