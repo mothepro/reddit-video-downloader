@@ -11,9 +11,9 @@ function assertNotNull<T>(expression: T, message?: string): NonNullable<T> {
 }
 
 /** Downloads an auto generated file locally. */
-function download(filename: string, text: string, meta: BlobPropertyBag = { type: 'text/csv' }) {
+function download(filename: string, href: string | URL) {
   const element = document.createElement('a')
-  element.setAttribute('href', URL.createObjectURL(new Blob([text], meta)))
+  element.setAttribute('href', href.toString())
   element.setAttribute('download', filename)
 
   // simulate click on invisible link to start download
@@ -30,10 +30,18 @@ try {
   assert(hostname.endsWith('reddit.com'), `Click again when you're on reddit`)
   assert(pathname.match(/\/r\/.+\/comments\/.+/), `Click again when you have a reddit post open`)
 
-  const redirect = new URL(href)
-  redirect.hostname = 'redditdl.com'
+  const title = document.querySelector('h1')?.textContent ?? `reddit video ${Date.now}.mp4`
+  const metaEl = assertNotNull(
+    document.querySelector(`meta[property="og:video"]`),
+    'Can not find video path (video might be NSWF)'
+  )
+  const videoUrl = new URL(
+    assertNotNull(metaEl.getAttribute('content'), 'Path to video is missing')
+  )
+  const [, id] = videoUrl.pathname.split('/')
+  videoUrl.pathname = `/${id}/DASH_1040.mp4`
 
-  location.href = redirect.toString()
+  download(title, videoUrl)
 } catch (err) {
   assert(err instanceof Error)
   alert(err.message)
