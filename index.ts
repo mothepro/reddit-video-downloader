@@ -24,9 +24,9 @@ try {
   let downloadUrl
   for (const filename of potentialFilenames) {
     videoUrl.pathname = `/${id}/${filename}`
-    const response = await fetch(videoUrl, { method: 'HEAD' })
-    if (response.ok) {
-      downloadUrl = videoUrl
+    const { ok } = await fetch(videoUrl, { method: 'HEAD' })
+    if (ok) {
+      downloadUrl = videoUrl.toString()
       break
     }
   }
@@ -56,9 +56,9 @@ function assertNotNull<T>(expression: T, message?: string): NonNullable<T> {
 }
 
 /** Downloads an auto generated file locally. */
-function download(filename: string, href: string | URL) {
+function download(filename: string, href: string) {
   const element = document.createElement('a')
-  element.setAttribute('href', href.toString())
+  element.setAttribute('href', href)
   element.setAttribute('download', filename)
 
   // simulate click on invisible link to start download
@@ -69,3 +69,5 @@ function download(filename: string, href: string | URL) {
   // maybe we shouldn't remove the element immediately
   // document.body.removeChild(element)
 }
+
+export {}
