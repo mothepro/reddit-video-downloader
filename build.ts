@@ -16,7 +16,7 @@ const root = parse(html)
 
 // replace the `href`
 const bookmarkletEl = assertNotNull(root.querySelector('a[bookmarklet]'))
-bookmarkletEl.setAttribute('href', `javascript:(function(){${encodedResult}})();`)
+bookmarkletEl.setAttribute('href', `javascript:(async function(){${encodedResult}})();`)
 
 // add last build time
 const buildTimeEl = root.querySelector('[build-time]')
