@@ -67,5 +67,3 @@ function download(filename: string, href: string) {
   // maybe we shouldn't remove the element immediately
   // document.body.removeChild(element)
 }
-
-export {}
