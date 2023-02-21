@@ -1,11 +1,5 @@
 /* filenames reddit uses in sorted by highest quality. */
-const potentialFilenames = [
-  'DASH_1040.mp4',
-  'DASH_720.mp4',
-  'DASH_480.mp4',
-  'DASH_360.mp4',
-  'DASH_240.mp4',
-]
+const potentialQualities = ['1040', '720', '480', '360', '240']
 const { hostname, href, pathname } = location
 
 try {
@@ -17,13 +11,11 @@ try {
     document.querySelector(`source`),
     'Can not find video path (video might be NSFW)'
   )
-  const videoUrl = new URL(
-    assertNotNull(sourceEl.getAttribute('src'), 'Path to video is missing')
-  )
+  const videoUrl = new URL(assertNotNull(sourceEl.getAttribute('src'), 'Path to video is missing'))
   const [, id] = videoUrl.pathname.split('/')
   let downloadUrl
-  for (const filename of potentialFilenames) {
-    videoUrl.pathname = `/${id}/${filename}`
+  for (const quality of potentialQualities) {
+    videoUrl.pathname = `/${id}/DASH_${quality}.mp4` // reddit's video format url
     const { ok } = await fetch(videoUrl, { method: 'HEAD' })
     if (ok) {
       downloadUrl = videoUrl.toString()
