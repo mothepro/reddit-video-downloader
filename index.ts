@@ -1,4 +1,51 @@
+/* filenames reddit uses in sorted by highest quality. */
+const potentialQualities = [1080, 720, 480, 360, 240]
+const { hostname, href, pathname } = location
+
+try {
+  assert(hostname.endsWith('reddit.com'), `Click again when you're on reddit`)
+  assert(pathname.match(/\/r\/.+\/comments\/.+/), `Click again when you have a reddit post open`)
+
+  try {
+    const title = document.querySelector('h1')?.textContent ?? `reddit video ${Date.now}.mp4`
+    const sourceEl = assertNotNull(
+      document.querySelector(`source`),
+      'Can not find video path (video might be NSFW)'
+    )
+    const videoUrl = new URL(
+      assertNotNull(sourceEl.getAttribute('src'), 'Path to video is missing')
+    )
+    videoUrl.search = ''
+    const [, id] = videoUrl.pathname.split('/')
+    
+    let downloadUrl
+    for (const quality of potentialQualities) {
+      videoUrl.pathname = `/${id}/DASH_${quality}.mp4` // reddit's video format url
+      // @ts-expect-error ugh top-level await is a pain...
+      const { ok } = await fetch(videoUrl, { method: 'HEAD' })
+      if (ok) {
+        downloadUrl = videoUrl.toString()
+        break
+      }
+    }
+
+    download(title, assertNotNull(downloadUrl, 'Unable to find direct destination of video'))
+  } catch (err) {
+    assert(err instanceof Error)
+    console.error('reddit-video-downloader', err.message)
+
+    // redirect to a helper site
+    const url = new URL(href)
+    url.host = 'redditdl.com'
+    location.href = url.toString()
+  }
+} catch (err) {
+  assert(err instanceof Error)
+  alert(err.message)
+}
+
 // TODO move these to a helper file but that requires a builder to merge all into one file.
+
 /** Assert an expression is true. */
 function assert(expression: unknown, message = 'Assertion Error'): asserts expression {
   if (!expression) throw new Error(message)
@@ -11,9 +58,9 @@ function assertNotNull<T>(expression: T, message?: string): NonNullable<T> {
 }
 
 /** Downloads an auto generated file locally. */
-function download(filename: string, text: string, meta: BlobPropertyBag = { type: 'text/csv' }) {
+function download(filename: string, href: string) {
   const element = document.createElement('a')
-  element.setAttribute('href', URL.createObjectURL(new Blob([text], meta)))
+  element.setAttribute('href', href)
   element.setAttribute('download', filename)
 
   // simulate click on invisible link to start download
@@ -23,18 +70,4 @@ function download(filename: string, text: string, meta: BlobPropertyBag = { type
   element.click()
   // maybe we shouldn't remove the element immediately
   // document.body.removeChild(element)
-}
-
-try {
-  const { hostname, href, pathname } = location
-  assert(hostname.endsWith('reddit.com'), `Click again when you're on reddit`)
-  assert(pathname.match(/\/r\/.+\/comments\/.+/), `Click again when you have a reddit post open`)
-
-  const redirect = new URL(href)
-  redirect.hostname = 'redditdl.com'
-
-  location.href = redirect.toString()
-} catch (err) {
-  assert(err instanceof Error)
-  alert(err.message)
 }
