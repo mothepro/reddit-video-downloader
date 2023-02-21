@@ -19,6 +19,7 @@ try {
     let downloadUrl
     for (const quality of potentialQualities) {
       videoUrl.pathname = `/${id}/DASH_${quality}.mp4` // reddit's video format url
+      // @ts-expect-error ugh top-level await is a pain...
       const { ok } = await fetch(videoUrl, { method: 'HEAD' })
       if (ok) {
         downloadUrl = videoUrl.toString()
@@ -40,6 +41,7 @@ try {
   assert(err instanceof Error)
   alert(err.message)
 }
+
 // TODO move these to a helper file but that requires a builder to merge all into one file.
 
 /** Assert an expression is true. */
