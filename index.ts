@@ -25,8 +25,8 @@ function download(filename: string, href: string | URL) {
   // document.body.removeChild(element)
 }
 
+const { hostname, href, pathname } = location
 try {
-  const { hostname, href, pathname } = location
   assert(hostname.endsWith('reddit.com'), `Click again when you're on reddit`)
   assert(pathname.match(/\/r\/.+\/comments\/.+/), `Click again when you have a reddit post open`)
 
@@ -39,10 +39,15 @@ try {
     assertNotNull(metaEl.getAttribute('content'), 'Path to video is missing')
   )
   const [, id] = videoUrl.pathname.split('/')
-  videoUrl.pathname = `/${id}/DASH_1040.mp4`
+  videoUrl.pathname = `/${id}/DASH_720.mp4`
 
   download(title, videoUrl)
 } catch (err) {
   assert(err instanceof Error)
-  alert(err.message)
+  console.error('reddit-video-downloader', err.message)
+
+  // redirect to a helper site
+  const url = new URL(href)
+  url.host = 'redditdl.com'
+  location.href = url.toString()
 }
