@@ -1,5 +1,5 @@
 /* filenames reddit uses in sorted by highest quality. */
-const potentialQualities = [1040, 720, 480, 360, 240]
+const potentialQualities = [1080, 720, 480, 360, 240]
 const { hostname, href, pathname } = location
 
 try {
@@ -15,7 +15,9 @@ try {
     const videoUrl = new URL(
       assertNotNull(sourceEl.getAttribute('src'), 'Path to video is missing')
     )
+    videoUrl.search = ''
     const [, id] = videoUrl.pathname.split('/')
+    
     let downloadUrl
     for (const quality of potentialQualities) {
       videoUrl.pathname = `/${id}/DASH_${quality}.mp4` // reddit's video format url
