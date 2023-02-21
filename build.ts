@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url'
 import { minify } from 'terser'
 
 const htmlPath = resolve(dirname(fileURLToPath(import.meta.url)), '../index.html')
-const srcPath = resolve(dirname(fileURLToPath(import.meta.url)), 'index.js')
+const srcPath = resolve(dirname(fileURLToPath(import.meta.url)), 'index.mjs')
 
 const html = assertNotNull(await readFileAsync(htmlPath))
 const sourceCode = assertNotNull(await readFileAsync(srcPath))
